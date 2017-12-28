@@ -1,0 +1,13 @@
+{
+  "name": "amqp-to-mattermost",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "git@github.com:jeffshaver/amqp-to-mattermost.git",
+  "author": "Jeffrey Shaver <jeff.e.shaver@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "dotenv": "^4.0.0",
+    "winston": "^3.0.0-rc1"
+  }
+}
