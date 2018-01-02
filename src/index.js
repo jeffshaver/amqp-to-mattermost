@@ -1,11 +1,48 @@
 require('dotenv').config({ path: '.env', silent: true })
 
+const fs = require('fs')
 const amqp = require('amqplib')
-const http = require('http')
 const { URL } = require('url')
 const { logger } = require('./logger')
-const { AMQP_ENDPOINT, MATTERMOST_ENDPOINT, QUEUE } = process.env
+const {
+  AMQP_ENDPOINT,
+  CLIENT_CERT_LOCATION,
+  CLIENT_KEY_LOCATION,
+  MATTERMOST_ENDPOINT,
+  QUEUE
+} = process.env
 const mattermost_url = new URL(MATTERMOST_ENDPOINT)
+const connectionOptions = {
+  host: mattermost_url.host,
+  method: 'POST',
+  path: mattermost_url.pathname
+}
+const protocol = mattermost_url.protocol.substring(
+  0,
+  mattermost_url.protocol.length - 1
+)
+const request = require(protocol).request
+
+if (protocol === 'https') {
+  if (CLIENT_CERT_LOCATION === undefined || CLIENT_KEY_LOCATION === undefined) {
+    logger.error(
+      'You must provide both `CLIENT_CERT_LOCATION` and `CLIENT_KEY_LOCATION` when connecting to mattermost over TLS'
+    )
+    process.exit(1)
+  }
+
+  const readFile = path => {
+    try {
+      return path ? fs.readFileSync(path) : undefined
+    } catch (e) {
+      logger.error(`Tried to read file at path \`${e.path}\`. ${e.message}`)
+      process.exit(1)
+    }
+  }
+
+  connectionOptions.cert = readFile(CLIENT_CERT_LOCATION)
+  connectionOptions.key = readFile(CLIENT_KEY_LOCATION)
+}
 
 process.on('unhandledRejection', r => {
   console.log('unhandledRejection', r)
@@ -41,14 +78,12 @@ async function consume() {
           null,
           2
         )
-        const req = http.request({
+        const req = request({
+          ...connectionOptions,
           headers: {
             'Content-Type': 'application/json',
             'Content-Length': messageString.length
-          },
-          host: mattermost_url.host,
-          method: 'POST',
-          path: mattermost_url.pathname
+          }
         })
 
         req.on('error', e => {
