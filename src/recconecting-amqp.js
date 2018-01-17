@@ -1,18 +1,27 @@
+const { URL } = require('url')
 const amqp = require('amqplib')
 const { logger } = require('./logger')
 
 class ReconnectingAMQP {
   constructor(endpoint, options) {
+    const url = new URL(endpoint)
+
     this.connection = null
     this.channel = null
     this.endpoint = endpoint
     this.options = options
+    this.protocol = url.protocol
+    this.hostname = url.hostname
+    this.port = url.port
   }
 
   async connect() {
     try {
       this.connection = await amqp.connect(this.endpoint, this.options)
-      logger.info(`Successfully connected to ${this.endpoint}`)
+      logger.info(
+        'Successfully connected to ' +
+          `${this.protocol}//${this.hostname}:${this.port}`
+      )
       this.channel = await this.connection.createChannel()
       logger.info('Successfully created channel')
 
@@ -26,14 +35,6 @@ class ReconnectingAMQP {
   }
 
   async consume(queue, onConsume) {
-    if (!this.channel) {
-      logger.error(
-        'ReconnectingAMQP has not created a connection and/or channel yet. You must call `await amqp.connect()` before calling this function'
-      )
-
-      return
-    }
-
     try {
       await this.channel.assertQueue(queue)
 
@@ -56,14 +57,6 @@ class ReconnectingAMQP {
   }
 
   async sendToQueue(queue, message) {
-    if (!this.channel) {
-      logger.error(
-        'ReconnectingAMQP has not created a connection and/or channel yet. You must call `await amqp.connect()` before calling this function'
-      )
-
-      return
-    }
-
     try {
       await this.channel.assertQueue(queue)
       this.channel.sendToQueue(queue, Buffer.from(message))
