@@ -70,6 +70,12 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
+debug@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  dependencies:
+    ms "2.0.0"
+
 diagnostics@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/diagnostics/-/diagnostics-1.1.0.tgz#e1090900b49523e8527be20f081275205f2ae36a"
@@ -121,6 +127,10 @@ logform@^1.2.1:
     colors "^1.1.2"
     fecha "^2.3.2"
 
+ms@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
+
 one-time@0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/one-time/-/one-time-0.0.4.tgz#f8cdf77884826fe4dff93e3a9cc37b1e4480742e"
@@ -133,6 +143,13 @@ one-time@0.0.4:
     inherits "~2.0.1"
     isarray "0.0.1"
     string_decoder "~0.10.x"
+
+reconnecting-amqp@0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/reconnecting-amqp/-/reconnecting-amqp-0.0.3.tgz#33580f1fc3e10f07bff2fdf68459340459c4fb5f"
+  dependencies:
+    amqplib "^0.5.2"
+    debug "^3.1.0"
 
 safe-buffer@^5.0.1:
   version "5.1.1"
