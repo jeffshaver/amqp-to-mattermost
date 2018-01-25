@@ -18,6 +18,7 @@ const {
   AMQP_ENDPOINT,
   AMQP_KEY_LOCATION,
   AMQP_KEY_PASSPHRASE,
+  HTTP_REQUEST_CA_CERT_LOCATION,
   HTTP_REQUEST_CERT_LOCATION,
   HTTP_REQUEST_KEY_LOCATION,
   MATTERMOST_ENDPOINT,
@@ -38,11 +39,12 @@ const request = require(protocol).request
 
 if (protocol === 'https') {
   if (
+    HTTP_REQUEST_CA_CERT_LOCATION === undefined ||
     HTTP_REQUEST_CERT_LOCATION === undefined ||
     HTTP_REQUEST_KEY_LOCATION === undefined
   ) {
     logger.error(
-      'You must provide both `HTTP_REQUEST_CERT_LOCATION` and `HTTP_REQUEST_KEY_LOCATION` when connecting to mattermost over TLS'
+      'In order to connect to MATTERMOST over TLS, you must provide all of the following: `HTTP_REQUEST_CA_CERT_LOCATION`, HTTP_REQUEST_CERT_LOCATION` and `HTTP_REQUEST_KEY_LOCATION`.'
     )
     process.exit(1)
   }
@@ -56,6 +58,7 @@ if (protocol === 'https') {
     }
   }
 
+  connectionOptions.ca = readFile(HTTP_REQUEST_CA_CERT_LOCATION)
   connectionOptions.cert = readFile(HTTP_REQUEST_CERT_LOCATION)
   connectionOptions.key = readFile(HTTP_REQUEST_KEY_LOCATION)
 }
