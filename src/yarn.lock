@@ -144,9 +144,9 @@ one-time@0.0.4:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-reconnecting-amqp@0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/reconnecting-amqp/-/reconnecting-amqp-0.0.3.tgz#33580f1fc3e10f07bff2fdf68459340459c4fb5f"
+reconnecting-amqp@0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/reconnecting-amqp/-/reconnecting-amqp-0.0.4.tgz#8ae25f7b9343ccb039709bb86c665e917209a73c"
   dependencies:
     amqplib "^0.5.2"
     debug "^3.1.0"

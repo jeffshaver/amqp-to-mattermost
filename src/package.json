@@ -8,7 +8,7 @@
   "dependencies": {
     "amqplib": "^0.5.2",
     "dotenv": "^4.0.0",
-    "reconnecting-amqp": "0.0.3",
+    "reconnecting-amqp": "0.0.4",
     "winston": "^3.0.0-rc1"
   }
 }
